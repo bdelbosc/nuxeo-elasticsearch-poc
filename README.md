@@ -16,17 +16,18 @@ There are two elasticsearch type one for the documents and one for the audit log
 
 - GNU parallel
 
-      sudo apt-get install parallel
+       sudo apt-get install parallel
   
 - ElasticSearch >= 1.0.0
 
-     wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.deb
-     sudo dpkg -i elasticsearch-1.0.0.deb
+      wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.deb
+      sudo dpkg -i elasticsearch-1.0.0.deb
+    
 
 - Kibana >= 3.0.0milestone5
 
-    wget --no-check-certificate https://download.elasticsearch.org/kibana/kibana/kibana-3.0.0milestone5.zip
-    # Then unzip on you /var/www or point your browser to the index.html.
+       wget --no-check-certificate https://download.elasticsearch.org/kibana/kibana/kibana-3.0.0milestone5.zip
+       Then unzip on you /var/www or point your browser to the index.html.
 
 ## Dump the Nuxeo content
 
@@ -34,23 +35,103 @@ The documents:
 
     PGPASSWORD=secret DBNAME=nuxeo DBUSER=nuxeo DBHOST=localhost ./dump-doc.sh
 
+Here is the output
+
+    ### Dump database ... Fri Feb 14 17:38:18 CET 2014
+    creating file `doc000000'
+    creating file `doc000001'
+    ...
+    creating file `doc000059'
+    real    0m39.383s
+    user    0m0.188s
+    sys     0m0.232s
+    ### Total number of docs
+    59556
+    ### Creating archive...
+    real    0m0.744s
+    user    0m0.716s
+    sys     0m0.056s
+    ### Done:  Fri Feb 14 17:38:58 CET 2014
+    -rw-r--r-- 1 nuxeo nuxeo 3.3M Feb 14 17:38 dump-nuxeo-doc.tgz
+   /tmp/dump-nuxeo-doc.tgz
+
+
 The audit table:
 
     PGPASSWORD=secret DBNAME=nuxeo DBUSER=nuxeo DBHOST=localhost ./dump-audit.sh
+
+Output:
+
+    ### Dump database ... Fri Feb 14 17:43:28 CET 2014
+    creating file `audit000000'
+    ...
+    creating file `audit000078'
+    real    0m1.302s
+    user    0m0.192s
+    sys     0m0.160s
+    ### Total number of docs
+    78623
+    ### Creating archive...
+    real    0m0.595s
+    user    0m0.572s
+    sys     0m0.048s
+    ### Done:  Fri Feb 14 17:43:30 CET 2014
+    -rw-r--r-- 1 nuxeo nuxeo 2.7M Feb 14 17:43 dump-nuxeo-audit.tgz
+    /tmp/dump-nuxeo-audit.tgz
+
 
 ## Initialize the elasticsearch index
 
     ESHOST=localhost ESPORT=9200 ./init-index.sh
 
-## Import the documents and audit
+Output
+
+    Going to RESET the elasticsearch index localhost:9200/nuxeo, are you sure? [y/N] y
+    ### Delete index...
+    ### Creating index nuxeo ...
+    ### Creating mapping doc ...
+    ### Creating mapping audit ...
+    ### Done
+
+
+## Import content into elasticsearch
 
 Import the documents dump into elasticsearch:
 
     ESHOST=localhost ESPORT=9200 ./import.sh /tmp/dump-nuxeo-doc.tgz
+
+Output
+
+    ### Number of doc before import
+    {"count":0,"_shards":{"total":4,"successful":4,"failed":0}}
+    ### Total doc to import: 
+    59556
+    ### Import ...
+    real    0m0.283s
+    user    0m0.208s
+    sys     0m0.280s
+    ### Number of doc after import
+    {"count":59541,"_shards":{"total":4,"successful":4,"failed":0}}+ set +x
+
+ 
  
 Import the audit dump into elasticsearch:
 
-    ESHOST=localhost ESPORT=9200 ./import.sh /tmp/dump-nuxeo-doc.tgz
+    ESHOST=localhost ESPORT=9200 ESTYPE=audit ./import.sh /tmp/dump-nuxeo-audit.tgz
+
+Output
+
+    ### Number of doc before import
+    {"count":0,"_shards":{"total":4,"successful":4,"failed":0}}
+    ### Total doc to import: 
+    78623
+    ### Import ...
+    real    0m6.877s
+    user    0m0.712s
+    sys     0m0.964s
+    ### Number of doc after import
+    + curl -XGET localhost:9200/nuxeo/audit/_count
+    {"count":78623,"_shards":{"total":4,"successful":4,"failed":0}}+ set +x
 
 
 ## Import the kibana dashboards

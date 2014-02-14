@@ -3,10 +3,10 @@
 # Configure ES
 ESHOST=${ESHOST:-localhost}
 ESPORT=${ESPORT:-9200}
-
 ESINDEX=${ESINDEX:-nuxeo}
 ESSHARDS=${ESSHARDS:-4}
 ESREPLICAS=${ESREPLICAS:-0}
+
 
 read -r -p "Going to RESET the elasticsearch index $ESHOST:$ESPORT/$ESINDEX, are you sure? [y/N] " response
 case $response in
@@ -18,9 +18,9 @@ case $response in
         ;;
 esac
 echo "### Delete index..."
-curl -s -XDELETE "localhost:9200/$ESINDEX" curl | grep error
+curl -s -XDELETE "$ESHOST:$ESPORT/$ESINDEX" curl | grep error
 echo "### Creating index $ESINDEX ..."
-curl -s -XPUT "localhost:9200/$ESINDEX" -d '{
+curl -s -XPUT "$ESHOST:$ESPORT/$ESINDEX" -d '{
   "settings" : { 
     "index.number_of_shards": '"$ESSHARDS"', 
     "index.number_of_replicas": '"$ESREPLICAS"',
@@ -52,7 +52,7 @@ curl -s -XPUT "localhost:9200/$ESINDEX" -d '{
 }' |  grep error && exit -1
 
 echo "### Creating mapping doc ..."
-curl -s -X PUT "localhost:9200/$ESINDEX/doc/_mapping" -d '{
+curl -s -X PUT "$ESHOST:$ESPORT/$ESINDEX/doc/_mapping" -d '{
         "doc" : {
             "_source" : {
                 "excludes" : ["fulltext"]
@@ -149,7 +149,7 @@ curl -s -X PUT "localhost:9200/$ESINDEX/doc/_mapping" -d '{
   }' | grep "error" && exit -2
 
 echo "### Creating mapping audit ..."
-curl -s -X PUT "localhost:9200/$ESINDEX/audit/_mapping" -d '{
+curl -s -X PUT "$ESHOST:$ESPORT/$ESINDEX/audit/_mapping" -d '{
   "audit" : {
         "_timestamp" : { 
               "enabled" : true,

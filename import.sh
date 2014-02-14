@@ -33,7 +33,7 @@ echo
 echo "### Total doc to import: " 
 echo $((`find $dir -type f -print0 | xargs -0 cat | wc -l`/2))
 echo "### Import ..."
-time parallel -j$CONCURRENCY curl -s -XPOST localhost:9200/_bulk --data-binary {} -- `find $dir -type f | sed s/^/@/` >  /dev/null
+time parallel -j$CONCURRENCY curl -s -XPOST $ESHOST:$ESPORT/_bulk --data-binary {} -- `find $dir -type f | sed s/^/@/` >  /dev/null
 
 sleep 2
 echo "### Number of doc after import"

@@ -1,0 +1,12 @@
+syntax:glob
+dump
+gendata
+nuxeo-elasticsearch
+dist
+build
+doc/*.html
+*.pyc
+*.swp
+.#*
+*~
+src/funkload.egg-info/

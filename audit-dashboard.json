@@ -29,10 +29,9 @@
           "id": 0
         },
         "1": {
-          "type": "time",
-          "field": "date",
-          "from": "now-30d",
-          "to": "now",
+          "type": "field",
+          "field": "_type",
+          "query": "\"audit\"",
           "mandate": "must",
           "active": true,
           "alias": "",

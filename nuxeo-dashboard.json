@@ -29,8 +29,21 @@
         1,
         2
       ],
-      "list": {},
-      "ids": []
+      "list": {
+        "0": {
+          "type": "field",
+          "field": "_type",
+          "query": "\"doc\"",
+          "mandate": "must",
+          "active": true,
+          "alias": "",
+          "id": 0
+        }
+      },
+      "ids": [
+        0,
+        1
+      ]
     }
   },
   "rows": [
@@ -113,8 +126,7 @@
           "show_query": true,
           "legend_counts": true,
           "zerofill": true,
-          "derivative": false,
-          "error": "ClassCastException[org.elasticsearch.index.fielddata.plain.PagedBytesIndexFieldData cannot be cast to org.elasticsearch.index.fielddata.IndexNumericFieldData]"
+          "derivative": false
         }
       ],
       "notice": false
@@ -272,7 +284,7 @@
           "type": "table",
           "size": 20,
           "pages": 5,
-          "offset": 20,
+          "offset": 0,
           "sort": [
             "modified",
             "desc"
@@ -346,15 +358,15 @@
       "pinned": true,
       "history": [
         "",
+        "modified:>20140101",
+        "modified:>2014-01-01",
+        "NOT _exists_:modified",
+        "not _exists_:modified",
         "délégué",
         "prime",
         "(primarytype:Folder OR primarytype:File) AND NOT lifecyclestate:deleted AND isversion:F",
         "primarytype:Folder OR primarytype:File",
-        "NOT lifecyclestate:deleted AND isversion:F",
-        "isversion:F",
-        "isversion:T",
-        "isversion is null",
-        "isversion=null"
+        "NOT lifecyclestate:deleted AND isversion:F"
       ],
       "remember": 10,
       "enable": true
@@ -395,10 +407,10 @@
         "2h",
         "1d"
       ],
-      "timefield": "@timestamp",
+      "timefield": "modified",
       "enable": true,
-      "now": false,
-      "filter_id": 0
+      "now": true,
+      "filter_id": 1
     }
   ],
   "refresh": false

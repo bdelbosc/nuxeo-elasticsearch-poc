@@ -20,8 +20,7 @@ There are two elasticsearch type one for the documents and one for the audit log
   
 - ElasticSearch >= 1.0.0
 
-      wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.deb
-      sudo dpkg -i elasticsearch-1.0.0.deb
+      wget --no-check-certificate https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.deb && sudo dpkg -i elasticsearch-1.0.0.deb
     
 
 - Kibana >= 3.0.0milestone5
@@ -53,7 +52,7 @@ Here is the output
     sys     0m0.056s
     ### Done:  Fri Feb 14 17:38:58 CET 2014
     -rw-r--r-- 1 nuxeo nuxeo 3.3M Feb 14 17:38 dump-nuxeo-doc.tgz
-   /tmp/dump-nuxeo-doc.tgz
+    /tmp/dump-nuxeo-doc.tgz
 
 
 The audit table:

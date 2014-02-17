@@ -4,8 +4,8 @@
 ESHOST=${ESHOST:-localhost}
 ESPORT=${ESPORT:-9200}
 ESINDEX=${ESINDEX:-nuxeo}
-ESSHARDS=${ESSHARDS:-4}
-ESREPLICAS=${ESREPLICAS:-0}
+ESSHARDS=${ESSHARDS:-5}
+ESREPLICAS=${ESREPLICAS:-1}
 
 
 read -r -p "Going to RESET the elasticsearch index $ESHOST:$ESPORT/$ESINDEX, are you sure? [y/N] " response

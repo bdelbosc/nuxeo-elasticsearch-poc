@@ -54,9 +54,6 @@ curl -s -XPUT "$ESHOST:$ESPORT/$ESINDEX" -d '{
 echo "### Creating mapping doc ..."
 curl -s -X PUT "$ESHOST:$ESPORT/$ESINDEX/doc/_mapping" -d '{
         "doc" : {
-            "_source" : {
-                "excludes" : ["fulltext"]
-            },
             "_size" : {
               "enabled" : true
             },
